@@ -1,35 +1,49 @@
-def calculadora():
-    while True:
-        try:
-            num1 = float(input("Ingrese el primer número: "))
-            operador = input("Ingrese la operación (+, -, *, /): ")
-            num2 = float(input("Ingrese el segundo número: "))
+import tkinter as tk
+from tkinter import messagebox
 
-            if operador == "+":
-                resultado = num1 + num2
-            elif operador == "-":
-                resultado = num1 - num2
-            elif operador == "*":
-                resultado = num1 * num2
-            elif operador == "/":
-                if num2 == 0:
-                    resultado = "ERROR: División por cero"
-                else:
-                    resultado = num1 / num2
-            else:
-                resultado = "ERROR: Operación inválida"
+def calcular(operacion):
+    try:
+        num1 = float(entry1.get())  # Obtener el primer número
+        num2 = float(entry2.get())  # Obtener el segundo número
 
-            # Salida de datos
-            print(f"Resultado: {resultado}")
+        if operacion == "+":
+            resultado = num1 + num2
+        elif operacion == "-":
+            resultado = num1 - num2
+        elif operacion == "*":
+            resultado = num1 * num2
+        elif operacion == "/":
+            if num2 == 0:
+                messagebox.showerror("Error", "No se puede dividir entre 0")
+                return
+            resultado = num1 / num2
 
-        except ValueError:
-            print("ERROR: Entrada inválida. Ingrese números válidos.")
+        label_resultado.config(text=f"Resultado: {resultado}")
 
-        # Preguntar si se desea realizar otra operación
-        nueva_op = input("¿Desea realizar otra operación? (s/n): ").strip().lower()
-        if nueva_op != 's':
-            print("Calculadora finalizada.")
-            break
+    except ValueError:
+        messagebox.showerror("Error", "Ingrese valores numéricos válidos")
 
-# Ejecutar la calculadora
-calculadora()
+# Crear ventana
+ventana = tk.Tk()
+ventana.title("Calculadora")
+ventana.geometry("300x250")
+
+# Entradas de números
+entry1 = tk.Entry(ventana)
+entry1.pack(pady=5)
+
+entry2 = tk.Entry(ventana)
+entry2.pack(pady=5)
+
+# Botones de operaciones
+tk.Button(ventana, text="+", command=lambda: calcular("+")).pack(pady=2)
+tk.Button(ventana, text="-", command=lambda: calcular("-")).pack(pady=2)
+tk.Button(ventana, text="*", command=lambda: calcular("*")).pack(pady=2)
+tk.Button(ventana, text="/", command=lambda: calcular("/")).pack(pady=2)
+
+# Etiqueta de resultado
+label_resultado = tk.Label(ventana, text="Resultado: ")
+label_resultado.pack(pady=10)
+
+# Ejecutar la ventana
+ventana.mainloop()
